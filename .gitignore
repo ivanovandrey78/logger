@@ -1,0 +1,22 @@
+# Binaries and executables
+*.exe
+*.dll
+*.so
+*.dylib
+*.app
+
+# Build folders
+build/
+bin/
+dist/
+out/
+target/
+
+# System files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Logs
+*.log
