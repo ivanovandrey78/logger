@@ -1,6 +1,6 @@
 #include <iostream>
+#include <cstdint>
 
 int main() {
-  std::cout << "kitty!";
   return 0;
 }

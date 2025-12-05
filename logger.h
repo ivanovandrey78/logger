@@ -2,15 +2,13 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <chrono>
 
-enum OutType { CONSOLE, FILE };
+enum OutType { CONSOLE, OUT_FILE };
 enum LogLevel { DEBUG, INFO, WARN, ERROR };
 
 class Logger {
 private:
-    LogLevel cur_level_ = LogLevel::INFO; // defalut value
+    LogLevel cur_level_ = LogLevel::INFO;  // defalut value
     std::ostream* output_ = &std::cerr;    // defalut stream
 
 public: 
@@ -28,12 +26,7 @@ public:
     }
 
     // Main log func
-    static void log(LogLevel level, const std::string& message) {
-        auto& logger = getInstance();
-        if (logger.shouldLog(level)) {
-            logger.write(message);
-        }
-    }
+    static void log(LogLevel level, const std::string& message);
 
 private: 
     // Logger on - SingleTone Init
@@ -51,14 +44,5 @@ private:
     }
     
     /// Write in smth output
-    void write(const std::string& message) {
-        if (output_) {
-            *output_ << message << std::endl;
-        }
-    }
+    void write(const std::string& message);
 };
-
-#define LOG_DEBUG(msg) Logger::log(LogLevel::DEBUG, msg)
-#define LOG_INFO(msg)  Logger::log(LogLevel::INFO, msg)
-#define LOG_WARN(msg)  Logger::log(LogLevel::WARNING, msg)
-#define LOG_ERROR(msg) Logger::log(LogLevel::ERROR, msg)
