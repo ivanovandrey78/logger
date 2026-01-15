@@ -11,6 +11,7 @@ bin/
 dist/
 out/
 target/
+.vscode/
 
 # System files
 .DS_Store
