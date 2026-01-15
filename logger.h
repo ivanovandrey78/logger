@@ -1,48 +1,38 @@
-#pragma once 
+#pragma once
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
-enum OutType { CONSOLE, OUT_FILE };
-enum LogLevel { DEBUG, INFO, WARN, ERROR };
+enum class LogLevel { DEBUG, INFO, WARN, ERROR };
 
 class Logger {
-private:
-    LogLevel cur_level_ = LogLevel::INFO;  // defalut value
-    std::ostream* output_ = &std::cerr;    // defalut stream
-
-public: 
-    // Prohibition on copying
+public:
     Logger(const Logger&) = delete;
-    Logger& operator=(const Logger&) = delete; 
+    Logger& operator=(const Logger&) = delete;
 
-    // Logger settings
-    static void setLevel(LogLevel level) {
-        getInstance().cur_level_ = level;
-    }
-    
-    static void setOutput(std::ostream& os) {
-        getInstance().output_ = &os;
-    }
+    static Logger& getInstance();
 
-    // Main log func
-    static void log(LogLevel level, const std::string& message);
+    static void SetLevel(LogLevel level);
+    static void SetConsoleOutput();
+    static void SetFileOutput(const std::string& filename);
 
-private: 
-    // Logger on - SingleTone Init
-    static Logger& getInstance() {
-        static Logger logger;
-        return logger;
-    }
+    static void Debug(const std::string& message);
+    static void Info(const std::string& message);
+    static void Warn(const std::string& message);
+    static void Error(const std::string& message);
 
-    // Default constructor
+    static void Log(LogLevel level, const std::string& message);
+
+private:
     Logger() = default;
+    ~Logger();
 
-    // Checking that a event is worth logging
-    bool shouldLog(LogLevel level) const {
-        return level >= cur_level_;
-    }
-    
-    /// Write in smth output
-    void write(const std::string& message);
+    bool ShouldLog(LogLevel level) const;
+    void Write(LogLevel level, const std::string& message);
+    const char* LevelToString(LogLevel level) const;
+
+    LogLevel current_level_ = LogLevel::INFO;
+    std::ostream* output_ = &std::cerr;
+    std::ofstream file_stream_;
 };
